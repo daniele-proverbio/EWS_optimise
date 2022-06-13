@@ -15,6 +15,10 @@ Assess their performance by the parameter value at which  their increase is sign
 Inquire the role of n-tipping.
 
 ## Folders and reproducibility
+
+A brief description is here provided. For other details, refer to Chapter 5 of the thesis referenced below.
+
+### MATLAB simulation results
 - Simulate: folder containing the code to simulate the system (including statistical repreated experiments). Parameters used: c = 1.9:-0.002:1.68 (with c_0 = 1.78). To generate data for the analysis of sensitivity to noise level and n-tippiing, change manually "noise" (ln 36), rename the output .mat file and run the code. Original noise values: [0.010,0.012,0.014,0.016,0.018,0.020,0.025,0.030,0.035,0.040,0.045,0.050]. 
   * simulate_after_transition.m: Euler-Maruyama, additive white noise
   * simulate_after_transition_MN.m: Milstein, multiplicative noise
@@ -26,7 +30,9 @@ Inquire the role of n-tipping.
   * scaleStd: simple adjustments for plotting
   * wavelet_entrpy_analysis:focus on wavelet entropy
 
-For other details, refer to Chapter 5 of the thesis referenced below.
+### Mathematica analytical plots
+In "graphs.nb", subdivided according to considered normal form.
+
 
 
 ## Credits
