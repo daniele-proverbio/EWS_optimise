@@ -6,18 +6,23 @@
 % See Quad. 2.3, 4/11/2021 for comprehensive plan
 
 
-function [params_ok, counter] = analysis(filename, plotcheck)
+function [params_ok, counter] = analysis(filename, plotcheck,mult_noise)
 
 %% Prepare
 
 parentdir =  fileparts(pwd);
-load(fullfile(parentdir,'data/',filename)); % same as above, but up to c=1.68 (after the transition)
+
+if mult_noise
+    load(fullfile(parentdir,'data_mn/',filename)); % up to c=1.68 (after the transition)
+else
+    load(fullfile(parentdir,'data/',filename)); % up to c=1.68 (after the transition)
+end
 
 val2 = [1.9:-0.002:1.68] - 1.78;
 
 sol = sol(5000:end,1:end,1:end); % cut out transients
 
-%% Analysis Benchmark
+%% Analysis 
 % Estimate summary statistics
 
 % Var
@@ -97,8 +102,10 @@ if plotcheck == 1
     plot(val2(fig_cut:fig_end),mean_variance(fig_cut:fig_end),'k','LineWidth',1)
     xline(0,'--','linewidth',1)
     alpha(p,.05)
-    xlabel("c - c_0",'fontsize',14)
-    ylabel("Variance",'fontsize',14)
+    ax = gca;
+    ax.FontSize = 14; 
+    xlabel("c - c_0",'fontsize',18)
+    ylabel("Var.",'fontsize',18)
     
     subplot(ceil(num_fig/2),2,2)
     hold on
@@ -109,8 +116,10 @@ if plotcheck == 1
     plot(val2(fig_cut:fig_end),mean_AC(fig_cut:fig_end),'k','LineWidth',1)
     xline(0,'--','linewidth',1)
     alpha(q,.05)
-    xlabel("c - c_0",'fontsize',14)
-    ylabel("AC(1)",'fontsize',14)
+    ax = gca;
+    ax.FontSize = 14; 
+    xlabel("c - c_0",'fontsize',18)
+    ylabel("AC(1)",'fontsize',18)
     
     subplot(ceil(num_fig/2),2,3)
     high_s = mean_skew+std_skew';
@@ -121,8 +130,10 @@ if plotcheck == 1
     plot(val2(fig_cut:fig_end),mean_skew(fig_cut:fig_end),'k','LineWidth',1)
     xline(0,'--','linewidth',1)
     alpha(r,.05)
-    xlabel("c - c_0",'fontsize',14)
-    ylabel("Skewness",'fontsize',14)
+    ax = gca;
+    ax.FontSize = 14;
+    xlabel("c - c_0",'fontsize',18)
+    ylabel("Skew.",'fontsize',18)
     
     subplot(ceil(num_fig/2),2,4)
     high_s = mean_kurt+std_kurt';
@@ -133,8 +144,10 @@ if plotcheck == 1
     plot(val2(fig_cut:fig_end),mean_kurt(fig_cut:fig_end),'k','LineWidth',1)
     xline(0,'--','linewidth',1)
     alpha(r,.05)
-    xlabel("c - c_0",'fontsize',14)
-    ylabel("Kurtosis",'fontsize',14)
+    ax = gca;
+    ax.FontSize = 14;
+    xlabel("c - c_0",'fontsize',18)
+    ylabel("Kurt.",'fontsize',18)
     
     subplot(ceil(num_fig/2),2,5)
     high_c = mean_CV+std_CV';
@@ -145,8 +158,10 @@ if plotcheck == 1
     plot(val2(fig_cut:fig_end),mean_CV(fig_cut:fig_end),'k','LineWidth',1)
     xline(0,'--','linewidth',1)
     alpha(r,.05)
-    xlabel("c - c_0",'fontsize',14)
-    ylabel("Coeff Var",'fontsize',14)
+    ax = gca;
+    ax.FontSize = 14;
+    xlabel("c - c_0",'fontsize',18)
+    ylabel("CV",'fontsize',18)
     
     subplot(ceil(num_fig/2),2,6)
     high_i = mean_ID+std_ID';
@@ -157,8 +172,10 @@ if plotcheck == 1
     plot(val2(fig_cut:fig_end),mean_ID(fig_cut:fig_end),'k','LineWidth',1)
     xline(0,'--','linewidth',1)
     alpha(r,.05)
-    xlabel("c - c_0",'fontsize',14)
-    ylabel("Index Dispersion",'fontsize',14)
+    ax = gca;
+    ax.FontSize = 14;
+    xlabel("c - c_0",'fontsize',18)
+    ylabel("ID",'fontsize',18)
     
     subplot(ceil(num_fig/2),2,7)
     high_i = mean_entropy_w+std_entropy_w';
@@ -169,8 +186,10 @@ if plotcheck == 1
     plot(val2(fig_cut:fig_end),mean_entropy_w(fig_cut:fig_end),'k','LineWidth',1)
     xline(0,'--','linewidth',1)
     alpha(r,.05)
-    xlabel("c - c_0",'fontsize',14)
-    ylabel("Wavelet Entropy",'fontsize',14)
+    ax = gca;
+    ax.FontSize = 14;
+    xlabel("c - c_0",'fontsize',18)
+    ylabel("E_w",'fontsize',18)
     
     subplot(ceil(num_fig/2),2,8)
     high_i = mean_entropy_s+std_entropy_s';
@@ -181,8 +200,10 @@ if plotcheck == 1
     plot(val2(fig_cut:fig_end),mean_entropy_s(fig_cut:fig_end),'k','LineWidth',1)
     xline(0,'--','linewidth',1)
     alpha(r,.05)
-    xlabel("c - c_0",'fontsize',14)
-    ylabel("Shannon Entropy",'fontsize',14)
+    ax = gca;
+    ax.FontSize = 14;
+    xlabel("c - c_0",'fontsize',18)
+    ylabel("H_s",'fontsize',18)
 
 end
 
@@ -194,7 +215,7 @@ param_ok_var = testsignificance(variance_matrix,val2);
 param_ok_AC = testsignificance(AC_matrix,val2);
 param_ok_skew = testsignificance(skew_matrix,val2);
 param_ok_kurt = testsignificance(kurt_matrix,val2);
-param_ok_cv = testsignificance(std(variance_matrix)./mean_matrix,val2);
+param_ok_cv = testsignificance(sqrt(variance_matrix)./mean_matrix,val2);
 param_ok_id = testsignificance(variance_matrix./mean_matrix,val2);
 param_ok_ent = testsignificance(entropy_matrix1,val2);
 

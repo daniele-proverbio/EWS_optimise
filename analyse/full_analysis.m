@@ -5,8 +5,15 @@ clear all; close all; clc;
 
 % Load files to analyse
 parentdir =  fileparts(pwd);
-files = dir(fullfile(parentdir,'data/*.mat'));   %files to analyse
 
+mult_noise = false;   % Do we want to analyse simulations with  white or multiplicative noise?
+ if mult_noise
+    files = dir(fullfile(parentdir,'data_mn/*.mat'));   %files to analyse
+ else
+    files = dir(fullfile(parentdir,'data/*.mat'));   %files to analyse 
+ end
+
+%%
 params_ok = zeros(size(files,1),7);  % parameter values for which the increase is significant, for 7 statistical indicators [var,ac1,skewness,kurtosis,CV,index dispersion, shannon entropy]
 counter = zeros(size(files,1),60);   % how many systems tipped at certain parameter values, for all considered parameter values from baseline to bifurcation point
 val2 = [1.9:-0.002:1.68] - 1.78;     % parameter values considered (before and after transition)
@@ -21,7 +28,7 @@ for n=1:size(files,1)
     else
         checkplot = 0;
     end
-    [params_ok(n,:), counter(n,:)] = analysis(files(n).name,checkplot);  % file name; shall I make the plots [1=yes, 0=no]?
+    [params_ok(n,:), counter(n,:)] = analysis(files(n).name,checkplot,mult_noise);  % file name; shall I make the plots [1=yes, 0=no]?
 end
 
 
@@ -51,5 +58,5 @@ colorbar
 
 %% Figure example
 
-analysis(files(n).name,checkplot);
+analysis(files(2).name,1,mult_noise);
 
