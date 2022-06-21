@@ -31,7 +31,7 @@ A brief description is here provided. For other details, refer to Chapter 5 of t
   * optimise: computes the combination of statisticall indicators, for the optimisation analysis.
   * testsignificance: checks the first parameter value at whichthe increasing trend of statistical indicastors become significant
   * scaleStd: simple adjustments for plotting
-  * wavelet_entropy_analysis:focus on wavelet entropy
+  * wavelet_entropy_analysis: preliminary tests on wavelet entropy
 
 ### Mathematica analytical plots
 In "graphs.nb", subdivided according to considered normal form.
