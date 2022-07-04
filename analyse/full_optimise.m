@@ -55,3 +55,9 @@ if white_noise == true
 else
     title("MN")
 end
+
+
+%% Uncertainty for sub-optimal combinations
+% Vary weights up to 20%; check corresponding S on graph; relative difference from maximum
+% Repeat the same for non-optimal weights (in this case, look for minimum
+% Do it for all
