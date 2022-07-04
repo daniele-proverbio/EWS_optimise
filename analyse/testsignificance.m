@@ -8,7 +8,6 @@ for n=2:size(matrix,1)-1
             p_value(n) = abs(pv);
 end
 
-
 p_value_mean = movmean(p_value,10);  % a bit of smoothing to suppress fluctuations due to finite sizes
 position_ok = find(p_value_mean < 0.05);  % when is p-value < 0.05 (typical significance)
 check_position = diff(position_ok);
@@ -29,13 +28,13 @@ for n =1:size(check_position,1)-10
     end
 end
 
-% % Example figure
+% % % Example figure
 % figure()
 % hold on
-% plot(val2(1:end-1),p_value_variance)
-% plot(val2(1:end-1),p_value_variance_mean)
+% plot(val2(1:end-1),p_value)
+% plot(val2(1:end-1),p_value_mean)
 % yline(0.05)
-% xline(param_ok_var)
+% xline(param_ok)
 % legend({'p-value','Moving avg','p_v = 0.05'},FontSize=14,Location='northwest')
 
 

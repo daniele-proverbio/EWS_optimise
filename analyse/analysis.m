@@ -6,16 +6,22 @@
 % See Quad. 2.3, 4/11/2021 for comprehensive plan
 
 
-function [params_ok, counter] = analysis(filename, plotcheck,mult_noise)
+function [params_ok, counter] = analysis(filename, plotcheck, white_noise, mult_noise)
 
 %% Prepare
 
 parentdir =  fileparts(pwd);
 
-if mult_noise
-    load(fullfile(parentdir,'data_mn/',filename)); % up to c=1.68 (after the transition)
+if white_noise
+      load(fullfile(parentdir,'data/',filename)); % up to c=1.68 (after the transition)
 else
-    load(fullfile(parentdir,'data/',filename)); % up to c=1.68 (after the transition)
+    if mult_noise == 0
+      load(fullfile(parentdir,'data_mn/',filename)); % up to c=1.68 (after the transition)
+    elseif mult_noise == 1
+      load(fullfile(parentdir,'data_mn1/',filename)); % up to c=1.68 (after the transition)
+    elseif mult_noise == 2
+      load(fullfile(parentdir,'data_mn2/',filename)); % up to c=1.68 (after the transition)
+    end
 end
 
 val2 = [1.9:-0.002:1.68] - 1.78;

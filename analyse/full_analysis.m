@@ -6,12 +6,20 @@ clear all; close all; clc;
 % Load files to analyse
 parentdir =  fileparts(pwd);
 
-mult_noise = false;   % Do we want to analyse simulations with  white or multiplicative noise?
- if mult_noise
-    files = dir(fullfile(parentdir,'data_mn/*.mat'));   %files to analyse
- else
-    files = dir(fullfile(parentdir,'data/*.mat'));   %files to analyse 
- end
+white_noise = false;  % Do we want to analyse simulations with  white or multiplicative noise?
+mult_noise = 2;       % 0 = sigma x; 1 = sigma x^2; 2 = sigma x^2/(1+x^2)
+
+if white_noise
+    files = dir(fullfile(parentdir,'data/*.mat'));   %files to analyse    
+else
+    if mult_noise == 0
+        files = dir(fullfile(parentdir,'data_mn/*.mat'));   %files to analyse
+    elseif mult_noise == 1
+        files = dir(fullfile(parentdir,'data_mn1/*.mat'));   %files to analyse
+    elseif mult_noise == 2
+        files = dir(fullfile(parentdir,'data_mn2/*.mat'));   %files to analyse
+    end
+end
 
 %%
 params_ok = zeros(size(files,1),7);  % parameter values for which the increase is significant, for 7 statistical indicators [var,ac1,skewness,kurtosis,CV,index dispersion, shannon entropy]
@@ -28,7 +36,7 @@ for n=1:size(files,1)
     else
         checkplot = 0;
     end
-    [params_ok(n,:), counter(n,:)] = analysis(files(n).name,checkplot,mult_noise);  % file name; shall I make the plots [1=yes, 0=no]?
+    [params_ok(n,:), counter(n,:)] = analysis(files(n).name,checkplot, white_noise, mult_noise);  % file name; shall I make the plots [1=yes, 0=no]?
 end
 
 
@@ -58,5 +66,5 @@ colorbar
 
 %% Figure example
 
-analysis(files(2).name,1,mult_noise);
+analysis(files(2).name,1,white_noise,mult_noise);
 
