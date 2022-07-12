@@ -40,6 +40,7 @@ In "graphs.nb", subdivided according to considered normal form.
 
 
 ### Data analysis (in Matlab)
+Folder: analysisDai2012  
 Public data from: Dai, L.; Vorselen, D.; Korolev, K. S.; Gore, J. (2012), Generic Indicators for Loss of Resilience Before a Tipping Point Leading to Population Collapse, Science, Article-journal, https://doi.org/10.1126/science.1219805
 - bootstrap: function to perform bootstrapping on empirical data, to estimate distributions of indicators.
 - full-analysis: estimate the indicators, calculate their significance for EWS
