@@ -34,11 +34,16 @@ A brief description is here provided. For other details, refer to the correspond
   * testsignificance: checks the first parameter value at whichthe increasing trend of statistical indicastors become significant
   * scaleStd: simple adjustments for plotting
 
-### Mathematica analytical plots
-In "graphs.nb", subdivided according to considered normal form.
+### Analytical plots and other figures (Mathematica and Matlab)
+In "code_figures": 
+- graph_final.nb: subdivided according to considered normal form
+- bifurcation_plots.nb: for bifurcation diagrams
+- bistability.m: plots for Fig. 4
+- hysteresis.m: for hysteresis plot, Fig. 1a
+- varying_parameter_NF.m: for smooth transition (Fig. 2c)
 
 
-### Data analysis (in Matlab)
+### Analysis of experimental data (in Matlab)
 Folder: analysisDai2012  
 Public data from: Dai, L.; Vorselen, D.; Korolev, K. S.; Gore, J. (2012), Generic Indicators for Loss of Resilience Before a Tipping Point Leading to Population Collapse, Science, Article-journal, https://doi.org/10.1126/science.1219805
 - bootstrap: function to perform bootstrapping on empirical data, to estimate distributions of indicators.
