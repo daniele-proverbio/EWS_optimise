@@ -1,0 +1,1010 @@
+(* Content-type: application/vnd.wolfram.mathematica *)
+
+(*** Wolfram Notebook File ***)
+(* http://www.wolfram.com/nb *)
+
+(* CreatedBy='Mathematica 12.1' *)
+
+(*CacheID: 234*)
+(* Internal cache information:
+NotebookFileLineBreakTest
+NotebookFileLineBreakTest
+NotebookDataPosition[       158,          7]
+NotebookDataLength[     41186,       1000]
+NotebookOptionsPosition[     39716,        966]
+NotebookOutlinePosition[     40107,        982]
+CellTagsIndexPosition[     40064,        979]
+WindowFrame->Normal*)
+
+(* Beginning of Notebook Content *)
+Notebook[{
+
+Cell[CellGroupData[{
+Cell["Plots bifurcations", "Title",
+ CellChangeTimes->{{3.8692869174482307`*^9, 
+  3.869286920655291*^9}},ExpressionUUID->"ab696742-afe1-41a3-8afc-\
+389ef17c245d"],
+
+Cell[CellGroupData[{
+
+Cell["Supercritical pitchfork", "Subsection",
+ CellChangeTimes->{{3.7669821753908453`*^9, 3.766982177422366*^9}, {
+  3.869287122486971*^9, 
+  3.869287126744891*^9}},ExpressionUUID->"ba8f47f6-966e-4fab-88c5-\
+d483a16ad932"],
+
+Cell[BoxData[
+ RowBox[{"(*", " ", 
+  RowBox[{
+   RowBox[{
+    RowBox[{
+    "Here", " ", "all", " ", "the", " ", "normal", " ", "forms", " ", "are", 
+     " ", "considered"}], ";", " ", "however"}], ",", " ", 
+   RowBox[{
+   "some", " ", "of", " ", "them", " ", "cannot", " ", "be", " ", 
+    "considered", " ", "critical", " ", "transitions"}]}], " ", 
+  "*)"}]], "Input",
+ CellChangeTimes->{{3.766984152545972*^9, 
+  3.766984186739933*^9}},ExpressionUUID->"f4692b2c-e741-4653-b09b-\
+3a82ace7a975"],
+
+Cell["\<\
+ Suba Thomas \"Bifurcation Diagrams with Flow Fields\"
+http://demonstrations.wolfram.com/BifurcationDiagramsWithFlowFields/
+Wolfram Demonstrations Project
+Published: March 7 2011 \
+\>", "Text",
+ CellChangeTimes->{
+  3.766982335118713*^9},ExpressionUUID->"9d617d58-382c-4acf-a54b-\
+b3cb369df5b8"],
+
+Cell[BoxData[{
+ RowBox[{
+  RowBox[{
+   RowBox[{
+    RowBox[{"bifurcationPoints", "[", 
+     RowBox[{"eqn_", ",", "par_", ",", "var_"}], "]"}], ":=", 
+    RowBox[{"Cases", "[", 
+     RowBox[{
+      RowBox[{
+       RowBox[{"{", 
+        RowBox[{"par", ",", "var"}], "}"}], "/.", 
+       RowBox[{"Solve", "[", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{
+            RowBox[{"D", "[", 
+             RowBox[{"eqn", ",", "var"}], "]"}], "\[Equal]", "0"}], ",", 
+           RowBox[{"eqn", "\[Equal]", "0"}]}], "}"}], ",", 
+         RowBox[{"{", 
+          RowBox[{"var", ",", "par"}], "}"}]}], "]"}]}], ",", 
+      RowBox[{"{", 
+       RowBox[{
+        RowBox[{"Except", "[", "_Complex", "]"}], ",", 
+        RowBox[{"Except", "[", "_Complex", "]"}]}], "}"}]}], "]"}]}], ";"}], 
+  "\[IndentingNewLine]"}], "\[IndentingNewLine]", 
+ RowBox[{
+  RowBox[{
+   RowBox[{"equilibriumCurvePlots", "[", 
+    RowBox[{"eqn_", ",", 
+     RowBox[{"{", 
+      RowBox[{"par_", ",", "parMin_", ",", "parMax_"}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"var_", ",", "varMin_", ",", "varmax_"}], "}"}]}], "]"}], ":=", 
+   
+   RowBox[{"Module", "[", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+      "bifPoints", ",", "criticalPoints", ",", "parRanges", ",", 
+       "equilibriumBranches", ",", "eigenValues", ",", 
+       "stabilityCharacteristics", ",", "plotSegments"}], "}"}], ",", 
+     RowBox[{
+      RowBox[{"bifPoints", "=", 
+       RowBox[{"bifurcationPoints", "[", 
+        RowBox[{"eqn", ",", "par", ",", "var"}], "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"criticalPoints", "=", 
+       RowBox[{"Union", "[", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{"parMin", ",", "parMax"}], "}"}], ",", 
+         RowBox[{"bifPoints", "[", 
+          RowBox[{"[", 
+           RowBox[{"All", ",", "1"}], "]"}], "]"}]}], "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"parRanges", "=", 
+       RowBox[{"Partition", "[", 
+        RowBox[{"criticalPoints", ",", "2", ",", "1"}], "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"equilibriumBranches", "=", 
+       RowBox[{"Solve", "[", 
+        RowBox[{
+         RowBox[{"eqn", "\[Equal]", "0"}], ",", "var"}], "]"}]}], ";", 
+      "\[IndentingNewLine]", 
+      RowBox[{"eigenValues", "=", 
+       RowBox[{
+        RowBox[{"D", "[", 
+         RowBox[{"eqn", ",", "var"}], "]"}], "/.", "equilibriumBranches"}]}], 
+      ";", "\[IndentingNewLine]", 
+      RowBox[{"stabilityCharacteristics", "=", 
+       RowBox[{"Flatten", "@", 
+        RowBox[{"Map", "[", 
+         RowBox[{
+          RowBox[{
+           RowBox[{"If", "[", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"Re", "[", "#", "]"}], "\[LessEqual]", "0"}], ",", 
+             RowBox[{"Dashing", "[", 
+              RowBox[{"{", "}"}], "]"}], ",", 
+             RowBox[{"Dashing", "[", 
+              RowBox[{"{", 
+               RowBox[{"0.0025", ",", "0.01"}], "}"}], "]"}]}], "]"}], "&"}], 
+          ",", 
+          RowBox[{"Outer", "[", 
+           RowBox[{
+            RowBox[{
+             RowBox[{"(", 
+              RowBox[{"#1", "/.", 
+               RowBox[{"par", "\[Rule]", "#2"}]}], ")"}], "&"}], ",", 
+            "eigenValues", ",", 
+            RowBox[{"Mean", "/@", "parRanges"}]}], "]"}], ",", 
+          RowBox[{"{", "2", "}"}]}], "]"}]}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"plotSegments", "=", 
+       RowBox[{"Distribute", "[", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"var", "/.", "equilibriumBranches"}], ",", "parRanges"}], 
+          "}"}], ",", "List"}], "]"}]}], ";", "\[IndentingNewLine]", 
+      RowBox[{"MapThread", "[", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"Plot", "[", 
+          RowBox[{
+           RowBox[{"#1", "[", 
+            RowBox[{"[", "1", "]"}], "]"}], ",", 
+           RowBox[{"Evaluate", "@", 
+            RowBox[{"Join", "[", 
+             RowBox[{
+              RowBox[{"{", "par", "}"}], ",", 
+              RowBox[{"#1", "[", 
+               RowBox[{"[", "2", "]"}], "]"}]}], "]"}]}], ",", 
+           RowBox[{"PlotStyle", "\[Rule]", 
+            RowBox[{"{", 
+             RowBox[{"Black", ",", "Thick", ",", "#2"}], "}"}]}]}], "]"}], 
+         "&"}], ",", 
+        RowBox[{"{", 
+         RowBox[{"plotSegments", ",", "stabilityCharacteristics"}], "}"}]}], 
+       "]"}]}]}], "]"}]}], "\[IndentingNewLine]"}], "\n", 
+ RowBox[{
+  RowBox[{"normalForms", "=", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{"\"\<saddle node bifurcation\>\"", ",", 
+       RowBox[{
+        RowBox[{"-", "p"}], "-", 
+        RowBox[{"x", "^", "2"}]}]}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"\"\<transcritical bifurcation\>\"", ",", 
+       RowBox[{
+        RowBox[{
+         RowBox[{"-", "p"}], " ", "x"}], "-", 
+        RowBox[{"x", "^", "2"}]}]}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"\"\<supercritical pitchfork bifurcation\>\"", ",", 
+       RowBox[{
+        RowBox[{"p", " ", "x"}], "-", 
+        RowBox[{"x", "^", "3"}]}]}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"\"\<subcritical pitchfork bifurcation\>\"", ",", 
+       RowBox[{
+        RowBox[{"p", " ", "x"}], "+", 
+        RowBox[{"x", "^", "3"}]}]}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"\"\<simple bifurcation\>\"", ",", 
+       RowBox[{
+        RowBox[{"x", "^", "2"}], "-", 
+        RowBox[{"p", "^", "2"}]}]}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"\"\<isola center\>\"", ",", 
+       RowBox[{"(", 
+        RowBox[{
+         RowBox[{"x", "^", "2"}], "+", 
+         RowBox[{"p", "^", "2"}]}], ")"}]}], "}"}], ",", 
+     RowBox[{"{", 
+      RowBox[{"\"\<hysteresis point\>\"", ",", 
+       RowBox[{
+        RowBox[{"x", "^", "3"}], "+", "p"}]}], "}"}]}], "}"}]}], 
+  ";"}], "\n"}], "Input",
+ CellChangeTimes->{{3.766982422152258*^9, 3.766982467112608*^9}, {
+   3.766983607009605*^9, 3.7669836078003283`*^9}, {3.7669836590740356`*^9, 
+   3.7669836593398523`*^9}, 3.768545114172615*^9, {3.771848886530349*^9, 
+   3.77184891915047*^9}, {3.7724293541047153`*^9, 3.7724293757582083`*^9}, {
+   3.7766850551715307`*^9, 3.776685100846299*^9}, {3.7803873217080603`*^9, 
+   3.780387335655631*^9}, {3.780387432566156*^9, 3.780387432740779*^9}, {
+   3.78038746767564*^9, 3.780387516102393*^9}, 3.855735540522975*^9, {
+   3.8557355711642714`*^9, 3.855735588419877*^9}, {3.862463361851475*^9, 
+   3.862463401456094*^9}},
+ CellLabel->
+  "In[456]:=",ExpressionUUID->"b4777e80-3b55-4b0c-8c94-8a3468411fa8"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"Manipulate", "[", "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"eqn", "=", 
+     RowBox[{"normalForms", "[", 
+      RowBox[{"[", 
+       RowBox[{"type", ",", " ", "2"}], "]"}], "]"}]}], ";", 
+    "\[IndentingNewLine]", 
+    RowBox[{"equilibriumPoints", "=", 
+     RowBox[{"Quiet", "@", 
+      RowBox[{"Thread", "[", 
+       RowBox[{"{", 
+        RowBox[{"par", ",", " ", 
+         RowBox[{"Select", "[", 
+          RowBox[{
+           RowBox[{"x", "/.", 
+            RowBox[{"Solve", "[", 
+             RowBox[{
+              RowBox[{
+               RowBox[{"(", 
+                RowBox[{"eqn", "/.", 
+                 RowBox[{"p", "\[Rule]", " ", "par"}]}], ")"}], "\[Equal]", 
+               "0"}], ",", " ", "x"}], "]"}]}], ",", " ", 
+           RowBox[{
+            RowBox[{"Element", "[", 
+             RowBox[{"#", ",", " ", "Reals"}], "]"}], "&"}]}], "]"}]}], "}"}],
+        "]"}]}]}], ";", "\[IndentingNewLine]", 
+    RowBox[{"Show", "[", 
+     RowBox[{
+      RowBox[{"If", "[", 
+       RowBox[{"showStreamLines", ",", " ", 
+        RowBox[{"StreamPlot", "[", 
+         RowBox[{
+          RowBox[{"{", 
+           RowBox[{"0", ",", " ", "eqn"}], "}"}], ",", " ", 
+          RowBox[{"{", 
+           RowBox[{"p", ",", " ", 
+            RowBox[{"-", "3"}], ",", " ", "3"}], "}"}], ",", " ", 
+          RowBox[{"{", 
+           RowBox[{"x", ",", " ", 
+            RowBox[{"-", "3"}], ",", " ", "3"}], "}"}], ",", " ", 
+          RowBox[{"StreamColorFunction", "\[Rule]", " ", 
+           RowBox[{"(", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"ColorData", "[", "\"\<TemperatureMap\>\"", "]"}], "[", 
+              
+              RowBox[{"Arg", "[", "#4", "]"}], "]"}], "&"}], ")"}]}], ",", 
+          RowBox[{"StreamColorFunctionScaling", "\[Rule]", " ", "False"}]}], 
+         "]"}], ",", " ", 
+        RowBox[{"Plot", "[", 
+         RowBox[{
+          RowBox[{"{", "}"}], ",", 
+          RowBox[{"{", 
+           RowBox[{"p", ",", " ", 
+            RowBox[{"-", "3"}], ",", " ", "3"}], "}"}]}], "]"}]}], "]"}], ",",
+       " ", 
+      RowBox[{"If", "[", 
+       RowBox[{"showEC", ",", " ", 
+        RowBox[{"equilibriumCurvePlots", "[", 
+         RowBox[{"eqn", ",", " ", 
+          RowBox[{"{", 
+           RowBox[{"p", ",", " ", 
+            RowBox[{"-", "3"}], ",", " ", "3"}], "}"}], ",", " ", 
+          RowBox[{"{", 
+           RowBox[{"x", ",", " ", 
+            RowBox[{"-", "3"}], ",", " ", "3"}], "}"}]}], "]"}], ",", 
+        RowBox[{"Plot", "[", 
+         RowBox[{
+          RowBox[{"{", "}"}], ",", 
+          RowBox[{"{", 
+           RowBox[{"p", ",", " ", 
+            RowBox[{"-", "3"}], ",", " ", "3"}], "}"}]}], "]"}]}], "]"}], ",",
+       " ", 
+      RowBox[{"PlotRange", "\[Rule]", " ", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"-", "3"}], ",", "3"}], "}"}], ",", " ", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"-", "3"}], ",", "3"}], "}"}]}], "}"}]}], ",", " ", 
+      RowBox[{"Axes", "\[Rule]", " ", "False"}], ",", " ", 
+      RowBox[{"AspectRatio", "\[Rule]", " ", "1"}], ",", 
+      RowBox[{"Epilog", "\[Rule]", " ", 
+       RowBox[{"Join", "[", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"PointSize", "[", "Large", "]"}], ",", " ", 
+           RowBox[{"Point", " ", "/@", "  ", "equilibriumPoints"}]}], "}"}], 
+         ",", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"PointSize", "[", "Large", "]"}], ",", "Brown"}], "}"}], 
+         ",", " ", 
+         RowBox[{"Point", " ", "/@", " ", 
+          RowBox[{"bifurcationPoints", "[", 
+           RowBox[{"eqn", ",", " ", "p", ",", " ", "x"}], "]"}]}]}], "]"}]}], 
+      ",", 
+      RowBox[{"Frame", "\[Rule]", " ", "True"}], ",", " ", 
+      RowBox[{"FrameLabel", "\[Rule]", " ", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"Style", "[", 
+          RowBox[{"\"\<p\>\"", ",", "25"}], "]"}], ",", " ", 
+         RowBox[{"Style", "[", 
+          RowBox[{
+           RowBox[{"OverTilde", "[", "\"\<x\>\"", "]"}], ",", "Italic", ",", 
+           "25"}], "]"}]}], "}"}]}], ",", 
+      RowBox[{"ImageSize", "\[Rule]", 
+       RowBox[{"{", 
+        RowBox[{"400", ",", "400"}], "}"}]}]}], "]"}]}], ",", 
+   "\[IndentingNewLine]", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+      "type", ",", "3", ",", " ", 
+       "\"\<\!\(\*FractionBox[\(d\[InvisibleSpace]x\), \
+\(\(\[InvisibleSpace]\)\(d\[InvisibleSpace]t\)\)]\) =\>\""}], "}"}], ",", " ", 
+     RowBox[{"Array", "[", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"Rule", "[", 
+         RowBox[{"#", ",", " ", 
+          RowBox[{"normalForms", "[", 
+           RowBox[{"[", 
+            RowBox[{"#", ",", "2"}], "]"}], "]"}]}], "]"}], "&"}], ",", " ", 
+       RowBox[{"Length", "[", "normalForms", "]"}]}], "]"}], " ", ",", " ", 
+     "PopupMenu"}], "}"}], ",", " ", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+      "par", ",", " ", "0", ",", " ", "\"\<bifurcation parameter p\>\""}], 
+      "}"}], ",", " ", 
+     RowBox[{"-", "3"}], ",", " ", "3", ",", 
+     RowBox[{"Appearance", "\[Rule]", "\"\<Lab\neled\>\""}]}], "}"}], ",", 
+   "  ", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+      "showEC", ",", " ", "True", ",", " ", 
+       "\"\<show equilibrium curves\>\""}], "}"}], ",", " ", 
+     RowBox[{"{", 
+      RowBox[{"True", ",", " ", "False"}], "}"}], ",", " ", "Checkbox"}], 
+    "}"}], ",", " ", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+      "showStreamLines", ",", " ", "False", ",", " ", 
+       "\"\<show streamlines\>\""}], "}"}], ",", " ", 
+     RowBox[{"{", 
+      RowBox[{"True", ",", " ", "False"}], "}"}], ",", " ", "Checkbox"}], 
+    "}"}], ",", " ", "\[IndentingNewLine]", 
+   RowBox[{"ControlPlacement", "\[Rule]", " ", 
+    RowBox[{"{", 
+     RowBox[{"Top", ",", " ", "Top", ",", " ", "Left", ",", " ", "Left"}], 
+     "}"}]}], ",", 
+   RowBox[{"SaveDefinitions", "\[Rule]", " ", "True"}], ",", 
+   RowBox[{"TrackedSymbols", "\[Rule]", "True"}]}], "]"}]], "Input",
+ CellChangeTimes->{{3.769247939465165*^9, 3.769247940434667*^9}, {
+  3.7803873442290897`*^9, 3.780387372214881*^9}, {3.780387407043195*^9, 
+  3.780387407185811*^9}, {3.780387445720541*^9, 3.7803874459923267`*^9}, {
+  3.780387478055017*^9, 3.780387540673427*^9}, {3.780387592640156*^9, 
+  3.7803876123488503`*^9}, {3.7803876456891937`*^9, 3.78038768272211*^9}, {
+  3.869286932290831*^9, 3.8692869328375893`*^9}, {3.869286989680867*^9, 
+  3.8692870261695127`*^9}, {3.8692872442249126`*^9, 3.869287253436326*^9}},
+ CellLabel->"In[13]:=",ExpressionUUID->"d2adb74a-68c6-440e-84a0-58de3839b2c2"],
+
+Cell[BoxData[
+ TagBox[
+  StyleBox[
+   DynamicModuleBox[{$CellContext`par$$ = 0, $CellContext`showEC$$ = 
+    True, $CellContext`showStreamLines$$ = False, $CellContext`type$$ = 3, 
+    Typeset`show$$ = True, Typeset`bookmarkList$$ = {}, 
+    Typeset`bookmarkMode$$ = "Menu", Typeset`animator$$, Typeset`animvar$$ = 
+    1, Typeset`name$$ = "\"untitled\"", Typeset`specs$$ = {{{
+       Hold[$CellContext`type$$], 3, 
+       "\!\(\*FractionBox[\(d\[InvisibleSpace]x\), \(\(\[InvisibleSpace]\)\(d\
+\[InvisibleSpace]t\)\)]\) ="}, {
+      1 -> -$CellContext`p - $CellContext`x^2, 
+       2 -> -$CellContext`p $CellContext`x - $CellContext`x^2, 
+       3 -> $CellContext`p $CellContext`x - $CellContext`x^3, 
+       4 -> $CellContext`p $CellContext`x + $CellContext`x^3, 
+       5 -> -$CellContext`p^2 + $CellContext`x^2, 
+       6 -> $CellContext`p^2 + $CellContext`x^2, 
+       7 -> $CellContext`p + $CellContext`x^3}}, {{
+       Hold[$CellContext`par$$], 0, "bifurcation parameter p"}, -3, 3}, {{
+       Hold[$CellContext`showEC$$], True, "show equilibrium curves"}, {
+      True, False}}, {{
+       Hold[$CellContext`showStreamLines$$], False, "show streamlines"}, {
+      True, False}}}, Typeset`size$$ = {400., {198., 202.}}, 
+    Typeset`update$$ = 0, Typeset`initDone$$, Typeset`skipInitDone$$ = False}, 
+    DynamicBox[Manipulate`ManipulateBoxes[
+     1, StandardForm, 
+      "Variables" :> {$CellContext`par$$ = 0, $CellContext`showEC$$ = 
+        True, $CellContext`showStreamLines$$ = False, $CellContext`type$$ = 
+        3}, "ControllerVariables" :> {}, 
+      "OtherVariables" :> {
+       Typeset`show$$, Typeset`bookmarkList$$, Typeset`bookmarkMode$$, 
+        Typeset`animator$$, Typeset`animvar$$, Typeset`name$$, 
+        Typeset`specs$$, Typeset`size$$, Typeset`update$$, Typeset`initDone$$,
+         Typeset`skipInitDone$$}, 
+      "Body" :> ($CellContext`eqn = 
+        Part[$CellContext`normalForms, $CellContext`type$$, 
+          2]; $CellContext`equilibriumPoints = Quiet[
+          Thread[{$CellContext`par$$, 
+            Select[
+             ReplaceAll[$CellContext`x, 
+              Solve[
+              ReplaceAll[$CellContext`eqn, $CellContext`p -> \
+$CellContext`par$$] == 0, $CellContext`x]], Element[#, Reals]& ]}]]; Show[
+         If[$CellContext`showStreamLines$$, 
+          
+          StreamPlot[{
+           0, $CellContext`eqn}, {$CellContext`p, -3, 3}, {$CellContext`x, -3,
+             3}, StreamColorFunction -> (ColorData["TemperatureMap"][
+             Arg[#4]]& ), StreamColorFunctionScaling -> False], 
+          Plot[{}, {$CellContext`p, -3, 3}]], 
+         If[$CellContext`showEC$$, 
+          $CellContext`equilibriumCurvePlots[$CellContext`eqn, \
+{$CellContext`p, -3, 3}, {$CellContext`x, -3, 3}], 
+          Plot[{}, {$CellContext`p, -3, 3}]], PlotRange -> {{-3, 3}, {-3, 3}},
+          Axes -> False, AspectRatio -> 1, Epilog -> Join[{
+            PointSize[Large], 
+            Map[Point, $CellContext`equilibriumPoints]}, {
+            PointSize[Large], Brown}, 
+           Map[Point, 
+            $CellContext`bifurcationPoints[$CellContext`eqn, $CellContext`p, \
+$CellContext`x]]], Frame -> True, FrameLabel -> {
+           Style["p", 25], 
+           Style[
+            OverTilde["x"], Italic, 25]}, ImageSize -> {400, 400}]), 
+      "Specifications" :> {{{$CellContext`type$$, 3, 
+          "\!\(\*FractionBox[\(d\[InvisibleSpace]x\), \(\(\[InvisibleSpace]\)\
+\(d\[InvisibleSpace]t\)\)]\) ="}, {
+         1 -> -$CellContext`p - $CellContext`x^2, 
+          2 -> -$CellContext`p $CellContext`x - $CellContext`x^2, 
+          3 -> $CellContext`p $CellContext`x - $CellContext`x^3, 
+          4 -> $CellContext`p $CellContext`x + $CellContext`x^3, 
+          5 -> -$CellContext`p^2 + $CellContext`x^2, 
+          6 -> $CellContext`p^2 + $CellContext`x^2, 
+          7 -> $CellContext`p + $CellContext`x^3}, ControlType -> 
+         PopupMenu}, {{$CellContext`par$$, 0, "bifurcation parameter p"}, -3, 
+         3, Appearance -> 
+         "Lab\neled"}, {{$CellContext`showEC$$, True, 
+          "show equilibrium curves"}, {True, False}, ControlType -> 
+         Checkbox}, {{$CellContext`showStreamLines$$, False, 
+          "show streamlines"}, {True, False}, ControlType -> Checkbox}}, 
+      "Options" :> {
+       ControlPlacement -> {Top, Top, Left, Left}, TrackedSymbols -> True}, 
+      "DefaultOptions" :> {}],
+     ImageSizeCache->{578., {258., 264.}},
+     SingleEvaluation->True],
+    Deinitialization:>None,
+    DynamicModuleValues:>{},
+    Initialization:>({$CellContext`eqn = -$CellContext`p - $CellContext`x^2, \
+$CellContext`normalForms = {{
+         "saddle node bifurcation", -$CellContext`p - $CellContext`x^2}, {
+         "transcritical bifurcation", -($CellContext`p $CellContext`x) - \
+$CellContext`x^2}, {
+         "supercritical pitchfork bifurcation", $CellContext`p $CellContext`x - \
+$CellContext`x^3}, {
+         "subcritical pitchfork bifurcation", $CellContext`p $CellContext`x + \
+$CellContext`x^3}, {
+         "simple bifurcation", -$CellContext`p^2 + $CellContext`x^2}, {
+         "isola center", $CellContext`p^2 + $CellContext`x^2}, {
+         "hysteresis point", $CellContext`p + $CellContext`x^3}}, \
+$CellContext`equilibriumPoints = {{0, 0}, {0, 
+        0}}, $CellContext`equilibriumCurvePlots[
+         Pattern[$CellContext`eqn, 
+          Blank[]], {
+          Pattern[$CellContext`par, 
+           Blank[]], 
+          Pattern[$CellContext`parMin, 
+           Blank[]], 
+          Pattern[$CellContext`parMax, 
+           Blank[]]}, {
+          Pattern[$CellContext`var, 
+           Blank[]], 
+          Pattern[$CellContext`varMin, 
+           Blank[]], 
+          Pattern[$CellContext`varmax, 
+           Blank[]]}] := 
+       Module[{$CellContext`bifPoints, $CellContext`criticalPoints, \
+$CellContext`parRanges, $CellContext`equilibriumBranches, \
+$CellContext`eigenValues, $CellContext`stabilityCharacteristics, \
+$CellContext`plotSegments}, $CellContext`bifPoints = \
+$CellContext`bifurcationPoints[$CellContext`eqn, $CellContext`par, \
+$CellContext`var]; $CellContext`criticalPoints = 
+          Union[{$CellContext`parMin, $CellContext`parMax}, 
+            Part[$CellContext`bifPoints, All, 1]]; $CellContext`parRanges = 
+          Partition[$CellContext`criticalPoints, 2, 
+            1]; $CellContext`equilibriumBranches = 
+          Solve[$CellContext`eqn == 
+            0, $CellContext`var]; $CellContext`eigenValues = ReplaceAll[
+            
+            D[$CellContext`eqn, $CellContext`var], \
+$CellContext`equilibriumBranches]; $CellContext`stabilityCharacteristics = 
+          Flatten[
+            Map[If[Re[#] <= 0, 
+              Dashing[{}], 
+              Dashing[{0.0025, 0.01}]]& , 
+             Outer[
+             ReplaceAll[#, $CellContext`par -> #2]& , \
+$CellContext`eigenValues, 
+              Map[Mean, $CellContext`parRanges]], {
+             2}]]; $CellContext`plotSegments = Distribute[{
+             
+             ReplaceAll[$CellContext`var, $CellContext`equilibriumBranches], \
+$CellContext`parRanges}, List]; MapThread[Plot[
+            Part[#, 1], 
+            Evaluate[
+             Join[{$CellContext`par}, 
+              Part[#, 2]]], 
+            PlotStyle -> {
+             Black, Thick, #2}]& , {$CellContext`plotSegments, \
+$CellContext`stabilityCharacteristics}]], $CellContext`bifurcationPoints[
+         Pattern[$CellContext`eqn, 
+          Blank[]], 
+         Pattern[$CellContext`par, 
+          Blank[]], 
+         Pattern[$CellContext`var, 
+          Blank[]]] := Cases[
+         ReplaceAll[{$CellContext`par, $CellContext`var}, 
+          
+          Solve[{D[$CellContext`eqn, $CellContext`var] == 0, $CellContext`eqn == 
+            0}, {$CellContext`var, $CellContext`par}]], {
+          Except[
+           Blank[Complex]], 
+          Except[
+           Blank[Complex]]}]}; Typeset`initDone$$ = True),
+    SynchronousInitialization->True,
+    UndoTrackedVariables:>{Typeset`show$$, Typeset`bookmarkMode$$},
+    UnsavedVariables:>{Typeset`initDone$$},
+    UntrackedVariables:>{Typeset`size$$}], "Manipulate",
+   Deployed->True,
+   StripOnInput->False],
+  Manipulate`InterpretManipulate[1]]], "Output",
+ CellChangeTimes->{
+  3.766982201635084*^9, 3.766982478638406*^9, {3.766982630499991*^9, 
+   3.76698263184688*^9}, 3.766983472942327*^9, 3.7669836275087223`*^9, 
+   3.76698366189163*^9, 3.766984067311039*^9, 3.7685451220177526`*^9, {
+   3.771848892505477*^9, 3.7718489220242367`*^9}, 3.772429382105234*^9, {
+   3.776685059243143*^9, 3.776685103291359*^9}, 3.780387379207678*^9, {
+   3.7803874417435493`*^9, 3.780387446876231*^9}, {3.780387541364707*^9, 
+   3.7803875635809402`*^9}, 3.780387599429927*^9, {3.78038763845354*^9, 
+   3.78038768350218*^9}, {3.85573554811728*^9, 3.8557355905052958`*^9}, {
+   3.86246336451486*^9, 3.8624634034045763`*^9}, {3.8692869093724422`*^9, 
+   3.869286933611767*^9}, {3.8692869697833443`*^9, 3.869287026799474*^9}, {
+   3.8692872449632473`*^9, 3.869287253732779*^9}, 3.869287304280645*^9},
+ CellLabel->"Out[13]=",ExpressionUUID->"53a93c12-331e-4ba7-b79b-003ec389f56a"]
+}, Open  ]],
+
+Cell["\<\
+As we can see, not all the normal forms can be critical (see Kuehn, 2013 for \
+a nice classification)\
+\>", "Text",
+ CellChangeTimes->{{3.7669840838163357`*^9, 
+  3.766984118446176*^9}},ExpressionUUID->"2cb28b00-27e7-4f25-a64c-\
+c77b39e5c921"],
+
+Cell[CellGroupData[{
+
+Cell[TextData[StyleBox["Saddle-node", "Subsection"]], "Subsubsection",
+ CellChangeTimes->{{3.869287132261016*^9, 
+  3.869287136091448*^9}},ExpressionUUID->"8a76a622-5d99-4d30-a5ba-\
+275c4ff6dae8"],
+
+Cell[CellGroupData[{
+
+Cell[BoxData[
+ RowBox[{"Manipulate", "[", "\[IndentingNewLine]", 
+  RowBox[{
+   RowBox[{
+    RowBox[{"eqn", "=", 
+     RowBox[{"normalForms", "[", 
+      RowBox[{"[", 
+       RowBox[{"type", ",", " ", "2"}], "]"}], "]"}]}], ";", 
+    "\[IndentingNewLine]", 
+    RowBox[{"equilibriumPoints", "=", 
+     RowBox[{"Quiet", "@", 
+      RowBox[{"Thread", "[", 
+       RowBox[{"{", 
+        RowBox[{"par", ",", " ", 
+         RowBox[{"Select", "[", 
+          RowBox[{
+           RowBox[{"x", "/.", 
+            RowBox[{"Solve", "[", 
+             RowBox[{
+              RowBox[{
+               RowBox[{"(", 
+                RowBox[{"eqn", "/.", 
+                 RowBox[{"p", "\[Rule]", " ", "par"}]}], ")"}], "\[Equal]", 
+               "0"}], ",", " ", "x"}], "]"}]}], ",", " ", 
+           RowBox[{
+            RowBox[{"Element", "[", 
+             RowBox[{"#", ",", " ", "Reals"}], "]"}], "&"}]}], "]"}]}], "}"}],
+        "]"}]}]}], ";", "\[IndentingNewLine]", 
+    RowBox[{"Show", "[", 
+     RowBox[{
+      RowBox[{"If", "[", 
+       RowBox[{"showStreamLines", ",", " ", 
+        RowBox[{"StreamPlot", "[", 
+         RowBox[{
+          RowBox[{"{", 
+           RowBox[{"0", ",", " ", "eqn"}], "}"}], ",", " ", 
+          RowBox[{"{", 
+           RowBox[{"p", ",", " ", 
+            RowBox[{"-", "3"}], ",", " ", "3"}], "}"}], ",", " ", 
+          RowBox[{"{", 
+           RowBox[{"x", ",", " ", 
+            RowBox[{"-", "3"}], ",", " ", "3"}], "}"}], ",", " ", 
+          RowBox[{"StreamColorFunction", "\[Rule]", " ", 
+           RowBox[{"(", 
+            RowBox[{
+             RowBox[{
+              RowBox[{"ColorData", "[", "\"\<TemperatureMap\>\"", "]"}], "[", 
+              
+              RowBox[{"Arg", "[", "#4", "]"}], "]"}], "&"}], ")"}]}], ",", 
+          RowBox[{"StreamColorFunctionScaling", "\[Rule]", " ", "False"}]}], 
+         "]"}], ",", " ", 
+        RowBox[{"Plot", "[", 
+         RowBox[{
+          RowBox[{"{", "}"}], ",", 
+          RowBox[{"{", 
+           RowBox[{"p", ",", " ", 
+            RowBox[{"-", "3"}], ",", " ", "3"}], "}"}]}], "]"}]}], "]"}], ",",
+       " ", 
+      RowBox[{"If", "[", 
+       RowBox[{"showEC", ",", " ", 
+        RowBox[{"equilibriumCurvePlots", "[", 
+         RowBox[{"eqn", ",", " ", 
+          RowBox[{"{", 
+           RowBox[{"p", ",", " ", 
+            RowBox[{"-", "3"}], ",", " ", "3"}], "}"}], ",", " ", 
+          RowBox[{"{", 
+           RowBox[{"x", ",", " ", 
+            RowBox[{"-", "3"}], ",", " ", "3"}], "}"}]}], "]"}], ",", 
+        RowBox[{"Plot", "[", 
+         RowBox[{
+          RowBox[{"{", "}"}], ",", 
+          RowBox[{"{", 
+           RowBox[{"p", ",", " ", 
+            RowBox[{"-", "3"}], ",", " ", "3"}], "}"}]}], "]"}]}], "]"}], ",",
+       " ", 
+      RowBox[{"PlotRange", "\[Rule]", " ", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"-", "3"}], ",", "3"}], "}"}], ",", " ", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"-", "3"}], ",", "3"}], "}"}]}], "}"}]}], ",", " ", 
+      RowBox[{"Axes", "\[Rule]", " ", "False"}], ",", " ", 
+      RowBox[{"AspectRatio", "\[Rule]", " ", "1"}], ",", 
+      RowBox[{"Epilog", "\[Rule]", " ", 
+       RowBox[{"Join", "[", 
+        RowBox[{
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"PointSize", "[", "Large", "]"}], ",", " ", 
+           RowBox[{"Point", " ", "/@", "  ", "equilibriumPoints"}]}], "}"}], 
+         ",", 
+         RowBox[{"{", 
+          RowBox[{
+           RowBox[{"PointSize", "[", "Large", "]"}], ",", "Brown"}], "}"}], 
+         ",", " ", 
+         RowBox[{"Point", " ", "/@", " ", 
+          RowBox[{"bifurcationPoints", "[", 
+           RowBox[{"eqn", ",", " ", "p", ",", " ", "x"}], "]"}]}]}], "]"}]}], 
+      ",", 
+      RowBox[{"Frame", "\[Rule]", " ", "True"}], ",", " ", 
+      RowBox[{"FrameLabel", "\[Rule]", " ", 
+       RowBox[{"{", 
+        RowBox[{
+         RowBox[{"Style", "[", 
+          RowBox[{"\"\<p\>\"", ",", "25"}], "]"}], ",", " ", 
+         RowBox[{"Style", "[", 
+          RowBox[{
+           RowBox[{"OverTilde", "[", "\"\<x\>\"", "]"}], ",", "Italic", ",", 
+           "25"}], "]"}]}], "}"}]}], ",", 
+      RowBox[{"ImageSize", "\[Rule]", 
+       RowBox[{"{", 
+        RowBox[{"400", ",", "400"}], "}"}]}]}], "]"}]}], ",", 
+   "\[IndentingNewLine]", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+      "type", ",", "3", ",", " ", 
+       "\"\<\!\(\*FractionBox[\(d\[InvisibleSpace]x\), \
+\(\(\[InvisibleSpace]\)\(d\[InvisibleSpace]t\)\)]\) =\>\""}], "}"}], ",", " ", 
+     RowBox[{"Array", "[", 
+      RowBox[{
+       RowBox[{
+        RowBox[{"Rule", "[", 
+         RowBox[{"#", ",", " ", 
+          RowBox[{"normalForms", "[", 
+           RowBox[{"[", 
+            RowBox[{"#", ",", "2"}], "]"}], "]"}]}], "]"}], "&"}], ",", " ", 
+       RowBox[{"Length", "[", "normalForms", "]"}]}], "]"}], " ", ",", " ", 
+     "PopupMenu"}], "}"}], ",", " ", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+      "par", ",", " ", "0", ",", " ", "\"\<bifurcation parameter p\>\""}], 
+      "}"}], ",", " ", 
+     RowBox[{"-", "3"}], ",", " ", "3", ",", 
+     RowBox[{"Appearance", "\[Rule]", "\"\<Lab\neled\>\""}]}], "}"}], ",", 
+   "  ", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+      "showEC", ",", " ", "True", ",", " ", 
+       "\"\<show equilibrium curves\>\""}], "}"}], ",", " ", 
+     RowBox[{"{", 
+      RowBox[{"True", ",", " ", "False"}], "}"}], ",", " ", "Checkbox"}], 
+    "}"}], ",", " ", 
+   RowBox[{"{", 
+    RowBox[{
+     RowBox[{"{", 
+      RowBox[{
+      "showStreamLines", ",", " ", "False", ",", " ", 
+       "\"\<show streamlines\>\""}], "}"}], ",", " ", 
+     RowBox[{"{", 
+      RowBox[{"True", ",", " ", "False"}], "}"}], ",", " ", "Checkbox"}], 
+    "}"}], ",", " ", "\[IndentingNewLine]", 
+   RowBox[{"ControlPlacement", "\[Rule]", " ", 
+    RowBox[{"{", 
+     RowBox[{"Top", ",", " ", "Top", ",", " ", "Left", ",", " ", "Left"}], 
+     "}"}]}], ",", 
+   RowBox[{"SaveDefinitions", "\[Rule]", " ", "True"}], ",", 
+   RowBox[{"TrackedSymbols", "\[Rule]", "True"}]}], "]"}]], "Input",
+ CellChangeTimes->{{3.769247939465165*^9, 3.769247940434667*^9}, {
+  3.7803873442290897`*^9, 3.780387372214881*^9}, {3.780387407043195*^9, 
+  3.780387407185811*^9}, {3.780387445720541*^9, 3.7803874459923267`*^9}, {
+  3.780387478055017*^9, 3.780387540673427*^9}, {3.780387592640156*^9, 
+  3.7803876123488503`*^9}, {3.7803876456891937`*^9, 3.78038768272211*^9}, {
+  3.869286932290831*^9, 3.8692869328375893`*^9}, {3.869286989680867*^9, 
+  3.8692870261695127`*^9}, {3.8692871760839252`*^9, 3.869287184309661*^9}},
+ CellLabel->"In[9]:=",ExpressionUUID->"b173c8e8-cd19-4892-8f44-b9331e4870f7"],
+
+Cell[BoxData[
+ TagBox[
+  StyleBox[
+   DynamicModuleBox[{$CellContext`par$$ = 0, $CellContext`showEC$$ = 
+    True, $CellContext`showStreamLines$$ = False, $CellContext`type$$ = 1, 
+    Typeset`show$$ = True, Typeset`bookmarkList$$ = {}, 
+    Typeset`bookmarkMode$$ = "Menu", Typeset`animator$$, Typeset`animvar$$ = 
+    1, Typeset`name$$ = "\"untitled\"", Typeset`specs$$ = {{{
+       Hold[$CellContext`type$$], 3, 
+       "\!\(\*FractionBox[\(d\[InvisibleSpace]x\), \(\(\[InvisibleSpace]\)\(d\
+\[InvisibleSpace]t\)\)]\) ="}, {
+      1 -> -$CellContext`p - $CellContext`x^2, 
+       2 -> -$CellContext`p $CellContext`x - $CellContext`x^2, 
+       3 -> $CellContext`p $CellContext`x - $CellContext`x^3, 
+       4 -> $CellContext`p $CellContext`x + $CellContext`x^3, 
+       5 -> -$CellContext`p^2 + $CellContext`x^2, 
+       6 -> $CellContext`p^2 + $CellContext`x^2, 
+       7 -> $CellContext`p + $CellContext`x^3}}, {{
+       Hold[$CellContext`par$$], 0, "bifurcation parameter p"}, -3, 3}, {{
+       Hold[$CellContext`showEC$$], True, "show equilibrium curves"}, {
+      True, False}}, {{
+       Hold[$CellContext`showStreamLines$$], False, "show streamlines"}, {
+      True, False}}}, Typeset`size$$ = {400., {198., 202.}}, 
+    Typeset`update$$ = 0, Typeset`initDone$$, Typeset`skipInitDone$$ = False}, 
+    DynamicBox[Manipulate`ManipulateBoxes[
+     1, StandardForm, 
+      "Variables" :> {$CellContext`par$$ = 0, $CellContext`showEC$$ = 
+        True, $CellContext`showStreamLines$$ = False, $CellContext`type$$ = 
+        3}, "ControllerVariables" :> {}, 
+      "OtherVariables" :> {
+       Typeset`show$$, Typeset`bookmarkList$$, Typeset`bookmarkMode$$, 
+        Typeset`animator$$, Typeset`animvar$$, Typeset`name$$, 
+        Typeset`specs$$, Typeset`size$$, Typeset`update$$, Typeset`initDone$$,
+         Typeset`skipInitDone$$}, 
+      "Body" :> ($CellContext`eqn = 
+        Part[$CellContext`normalForms, $CellContext`type$$, 
+          2]; $CellContext`equilibriumPoints = Quiet[
+          Thread[{$CellContext`par$$, 
+            Select[
+             ReplaceAll[$CellContext`x, 
+              Solve[
+              ReplaceAll[$CellContext`eqn, $CellContext`p -> \
+$CellContext`par$$] == 0, $CellContext`x]], Element[#, Reals]& ]}]]; Show[
+         If[$CellContext`showStreamLines$$, 
+          
+          StreamPlot[{
+           0, $CellContext`eqn}, {$CellContext`p, -3, 3}, {$CellContext`x, -3,
+             3}, StreamColorFunction -> (ColorData["TemperatureMap"][
+             Arg[#4]]& ), StreamColorFunctionScaling -> False], 
+          Plot[{}, {$CellContext`p, -3, 3}]], 
+         If[$CellContext`showEC$$, 
+          $CellContext`equilibriumCurvePlots[$CellContext`eqn, \
+{$CellContext`p, -3, 3}, {$CellContext`x, -3, 3}], 
+          Plot[{}, {$CellContext`p, -3, 3}]], PlotRange -> {{-3, 3}, {-3, 3}},
+          Axes -> False, AspectRatio -> 1, Epilog -> Join[{
+            PointSize[Large], 
+            Map[Point, $CellContext`equilibriumPoints]}, {
+            PointSize[Large], Brown}, 
+           Map[Point, 
+            $CellContext`bifurcationPoints[$CellContext`eqn, $CellContext`p, \
+$CellContext`x]]], Frame -> True, FrameLabel -> {
+           Style["p", 25], 
+           Style[
+            OverTilde["x"], Italic, 25]}, ImageSize -> {400, 400}]), 
+      "Specifications" :> {{{$CellContext`type$$, 3, 
+          "\!\(\*FractionBox[\(d\[InvisibleSpace]x\), \(\(\[InvisibleSpace]\)\
+\(d\[InvisibleSpace]t\)\)]\) ="}, {
+         1 -> -$CellContext`p - $CellContext`x^2, 
+          2 -> -$CellContext`p $CellContext`x - $CellContext`x^2, 
+          3 -> $CellContext`p $CellContext`x - $CellContext`x^3, 
+          4 -> $CellContext`p $CellContext`x + $CellContext`x^3, 
+          5 -> -$CellContext`p^2 + $CellContext`x^2, 
+          6 -> $CellContext`p^2 + $CellContext`x^2, 
+          7 -> $CellContext`p + $CellContext`x^3}, ControlType -> 
+         PopupMenu}, {{$CellContext`par$$, 0, "bifurcation parameter p"}, -3, 
+         3, Appearance -> 
+         "Lab\neled"}, {{$CellContext`showEC$$, True, 
+          "show equilibrium curves"}, {True, False}, ControlType -> 
+         Checkbox}, {{$CellContext`showStreamLines$$, False, 
+          "show streamlines"}, {True, False}, ControlType -> Checkbox}}, 
+      "Options" :> {
+       ControlPlacement -> {Top, Top, Left, Left}, TrackedSymbols -> True}, 
+      "DefaultOptions" :> {}],
+     ImageSizeCache->{578., {258., 264.}},
+     SingleEvaluation->True],
+    Deinitialization:>None,
+    DynamicModuleValues:>{},
+    Initialization:>({$CellContext`eqn = 
+       "supercritical pitchfork bifurcation", $CellContext`normalForms = {{
+         "saddle node bifurcation", -$CellContext`p - $CellContext`x^2}, {
+         "transcritical bifurcation", -($CellContext`p $CellContext`x) - \
+$CellContext`x^2}, {
+         "supercritical pitchfork bifurcation", $CellContext`p $CellContext`x - \
+$CellContext`x^3}, {
+         "subcritical pitchfork bifurcation", $CellContext`p $CellContext`x + \
+$CellContext`x^3}, {
+         "simple bifurcation", -$CellContext`p^2 + $CellContext`x^2}, {
+         "isola center", $CellContext`p^2 + $CellContext`x^2}, {
+         "hysteresis point", $CellContext`p + $CellContext`x^3}}, \
+$CellContext`equilibriumPoints = {0, 
+         Select[$CellContext`x, 
+          Element[#, Reals]& ]}, $CellContext`equilibriumCurvePlots[
+         Pattern[$CellContext`eqn, 
+          Blank[]], {
+          Pattern[$CellContext`par, 
+           Blank[]], 
+          Pattern[$CellContext`parMin, 
+           Blank[]], 
+          Pattern[$CellContext`parMax, 
+           Blank[]]}, {
+          Pattern[$CellContext`var, 
+           Blank[]], 
+          Pattern[$CellContext`varMin, 
+           Blank[]], 
+          Pattern[$CellContext`varmax, 
+           Blank[]]}] := 
+       Module[{$CellContext`bifPoints, $CellContext`criticalPoints, \
+$CellContext`parRanges, $CellContext`equilibriumBranches, \
+$CellContext`eigenValues, $CellContext`stabilityCharacteristics, \
+$CellContext`plotSegments}, $CellContext`bifPoints = \
+$CellContext`bifurcationPoints[$CellContext`eqn, $CellContext`par, \
+$CellContext`var]; $CellContext`criticalPoints = 
+          Union[{$CellContext`parMin, $CellContext`parMax}, 
+            Part[$CellContext`bifPoints, All, 1]]; $CellContext`parRanges = 
+          Partition[$CellContext`criticalPoints, 2, 
+            1]; $CellContext`equilibriumBranches = 
+          Solve[$CellContext`eqn == 
+            0, $CellContext`var]; $CellContext`eigenValues = ReplaceAll[
+            
+            D[$CellContext`eqn, $CellContext`var], \
+$CellContext`equilibriumBranches]; $CellContext`stabilityCharacteristics = 
+          Flatten[
+            Map[If[Re[#] <= 0, 
+              Dashing[{}], 
+              Dashing[{0.0025, 0.01}]]& , 
+             Outer[
+             ReplaceAll[#, $CellContext`par -> #2]& , \
+$CellContext`eigenValues, 
+              Map[Mean, $CellContext`parRanges]], {
+             2}]]; $CellContext`plotSegments = Distribute[{
+             
+             ReplaceAll[$CellContext`var, $CellContext`equilibriumBranches], \
+$CellContext`parRanges}, List]; MapThread[Plot[
+            Part[#, 1], 
+            Evaluate[
+             Join[{$CellContext`par}, 
+              Part[#, 2]]], 
+            PlotStyle -> {
+             Black, Thick, #2}]& , {$CellContext`plotSegments, \
+$CellContext`stabilityCharacteristics}]], $CellContext`bifurcationPoints[
+         Pattern[$CellContext`eqn, 
+          Blank[]], 
+         Pattern[$CellContext`par, 
+          Blank[]], 
+         Pattern[$CellContext`var, 
+          Blank[]]] := Cases[
+         ReplaceAll[{$CellContext`par, $CellContext`var}, 
+          
+          Solve[{D[$CellContext`eqn, $CellContext`var] == 0, $CellContext`eqn == 
+            0}, {$CellContext`var, $CellContext`par}]], {
+          Except[
+           Blank[Complex]], 
+          Except[
+           Blank[Complex]]}]}; Typeset`initDone$$ = True),
+    SynchronousInitialization->True,
+    UndoTrackedVariables:>{Typeset`show$$, Typeset`bookmarkMode$$},
+    UnsavedVariables:>{Typeset`initDone$$},
+    UntrackedVariables:>{Typeset`size$$}], "Manipulate",
+   Deployed->True,
+   StripOnInput->False],
+  Manipulate`InterpretManipulate[1]]], "Output",
+ CellChangeTimes->{{3.869287150016486*^9, 3.869287184622551*^9}},
+ CellLabel->"Out[9]=",ExpressionUUID->"027087bc-6b5c-4762-9dcc-3df1e0d147eb"]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]]
+},
+WindowSize->{808, 698},
+WindowMargins->{{4, Automatic}, {Automatic, 4}},
+FrontEndVersion->"12.1 for Mac OS X x86 (64-bit) (June 19, 2020)",
+StyleDefinitions->"Default.nb",
+ExpressionUUID->"f523505d-e6c6-497a-a30e-bfd5eb2789d1"
+]
+(* End of Notebook Content *)
+
+(* Internal cache information *)
+(*CellTagsOutline
+CellTagsIndex->{}
+*)
+(*CellTagsIndex
+CellTagsIndex->{}
+*)
+(*NotebookFileOutline
+Notebook[{
+Cell[CellGroupData[{
+Cell[580, 22, 163, 3, 98, "Title",ExpressionUUID->"ab696742-afe1-41a3-8afc-389ef17c245d"],
+Cell[CellGroupData[{
+Cell[768, 29, 222, 4, 54, "Subsection",ExpressionUUID->"ba8f47f6-966e-4fab-88c5-d483a16ad932"],
+Cell[993, 35, 498, 13, 52, "Input",ExpressionUUID->"f4692b2c-e741-4653-b09b-3a82ace7a975"],
+Cell[1494, 50, 305, 8, 104, "Text",ExpressionUUID->"9d617d58-382c-4acf-a54b-b3cb369df5b8"],
+Cell[1802, 60, 6503, 172, 556, "Input",ExpressionUUID->"b4777e80-3b55-4b0c-8c94-8a3468411fa8"],
+Cell[CellGroupData[{
+Cell[8330, 236, 6706, 173, 469, "Input",ExpressionUUID->"d2adb74a-68c6-440e-84a0-58de3839b2c2"],
+Cell[15039, 411, 9055, 182, 541, "Output",ExpressionUUID->"53a93c12-331e-4ba7-b79b-003ec389f56a"]
+}, Open  ]],
+Cell[24109, 596, 253, 6, 35, "Text",ExpressionUUID->"2cb28b00-27e7-4f25-a64c-c77b39e5c921"],
+Cell[CellGroupData[{
+Cell[24387, 606, 196, 3, 46, "Subsubsection",ExpressionUUID->"8a76a622-5d99-4d30-a5ba-275c4ff6dae8"],
+Cell[CellGroupData[{
+Cell[24608, 613, 6705, 173, 490, "Input",ExpressionUUID->"b173c8e8-cd19-4892-8f44-b9331e4870f7"],
+Cell[31316, 788, 8348, 172, 541, "Output",ExpressionUUID->"027087bc-6b5c-4762-9dcc-3df1e0d147eb"]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]]
+}, Open  ]]
+}
+]
+*)
+
+(* End of internal cache information *)
+
