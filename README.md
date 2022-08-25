@@ -1,4 +1,4 @@
-# EWS Sensitivity and Performance
+# EWS systematic analysis and Optimisation
 
 Code to estimate and opptimise the performance of EWS in approaching bifurcations and their sensitivity to the interplay of b-tipping and n-tipping. Associiated to the manuscript: Proverbio et al., "Systematic analysis and optimization of early warning signals for critical transitions" (2022)
 
@@ -39,7 +39,7 @@ In "code_figures":
 - graph_final.nb: subdivided according to considered normal form
 - bifurcation_plots.nb: for bifurcation diagrams
 - bistability.m: plots for Fig. 4
-- hysteresis.m: for hysteresis plot, Fig. 1a
+- hysteresis.m: for hysteresis plot, Fig. 1a (with companion .mat files)
 - varying_parameter_NF.m: for smooth transition (Fig. 2c)
 
 
