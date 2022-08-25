@@ -1,6 +1,6 @@
 # EWS Sensitivity and Performance
 
-Code to estimate the performance of EWS in approaching bifurcations and their sensitivity to the interplay of b-tipping and n-tipping.
+Code to estimate and opptimise the performance of EWS in approaching bifurcations and their sensitivity to the interplay of b-tipping and n-tipping. Associiated to the manuscript: Proverbio et al., "Systematic analysis and optimization of early warning signals for critical transitions" (2022)
 
 ### Considered model
 Autoactivating positive feedback loop for enzymatic activity (Strogatz, 2018)
@@ -16,7 +16,7 @@ Inquire the role of n-tipping.
 
 ## Folders and reproducibility
 
-A brief description is here provided. For other details, refer to Chapter 5 of the thesis referenced below.
+A brief description is here provided. For other details, refer to the corresponding manuscript.
 
 ### MATLAB simulation results
 - simulate: folder containing the code to simulate the system (including statistical repreated experiments). Parameters used: c = 1.9:-0.002:1.68 (with c_0 = 1.78). To generate data for the analysis of sensitivity to noise level and n-tipping, change manually "noise" (ln 36), rename the output .mat file and run the code. Original noise values: [0.010,0.012,0.014,0.016,0.018,0.020,0.025,0.030,0.035,0.040,0.045,0.050]. 
@@ -43,16 +43,3 @@ Folder: analysisDai2012
 Public data from: Dai, L.; Vorselen, D.; Korolev, K. S.; Gore, J. (2012), Generic Indicators for Loss of Resilience Before a Tipping Point Leading to Population Collapse, Science, Article-journal, https://doi.org/10.1126/science.1219805
 - bootstrap: function to perform bootstrapping on empirical data, to estimate distributions of indicators.
 - full-analysis: estimate the indicators, calculate their significance for EWS
-
-
-## Credits
-Author: Daniele Proverbio, LCSB, 2022 (daniele.proverbio@outlook.com).
-Please cite the corresponding thesis if you use any figure or code.
-
-### Suggested citation (bibtex)
-@thesis{Proverbio2022,   
-author = {{Proverbio}, Daniele},   
-publisher = {University of Luxembourg},   
-title = {{Classification and detection of critical transitions}},   
-year = {2022}
-}
