@@ -3,8 +3,8 @@
 % Let's look at the various statistical indicators
 % The different experiments are used to define the error bounds
 
-% See Quad. 2.3, 4/11/2021 and related publication for comprehensive plan
-% and explanation
+% Include CV to make sure it does not get selected by the optimisation
+% procedure
 
 
 function [param_ok_new] = optimise(filename, combo, white_noise, mult_noise)
