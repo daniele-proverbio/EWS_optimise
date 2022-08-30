@@ -48,10 +48,6 @@ for n=1:size(sol,3)
 end
 
 
-% Coefficient Variation
-mean_matrix = reshape( mean(sol,1), size(sol,2), size(sol,3) );
-CV_matrix = sqrt(variance_matrix)./mean_matrix;
-
 % Shannon entropy
 entropy_matrix1 = zeros(size(sol,2),size(sol,3)); % classical Shannon entropy
 for n=1:size(sol,2)
@@ -65,7 +61,7 @@ end
 %%
 param_ok_new = zeros(1,size(combo,2));
 for index=1:size(combo,2)
-    new_ind = combo(1,index) .*  variance_matrix + combo(2,index) .* AC_matrix + combo(3,index) * CV_matrix + combo(4,index) * entropy_matrix1;
+    new_ind = combo(1,index) .*  variance_matrix + combo(2,index) .* AC_matrix + combo(3,index) * entropy_matrix1;
     param_ok_new(index) = testsignificance(new_ind,val2);
 end
 

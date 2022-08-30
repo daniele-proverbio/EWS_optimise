@@ -19,7 +19,7 @@ else
     elseif mult_noise == 2
         files = dir(fullfile(parentdir,'data_mn2/*.mat'));   %files to analyse
     elseif mult_noise == 3
-        files = dir(fullfile(parentdir,'data_both/*_a09.mat'));   %files to analyse
+        files = dir(fullfile(parentdir,'data_both/*_a02.mat'));   %files to analyse
     end
 end
 
@@ -28,7 +28,7 @@ end
 
 a = 0:0.1:1;
 b = combvec(a,a,a);
-c = b(1,:) + b(2,:) + b(3,:) ;
+c = b(1,:) + b(2,:) + b(3,:);
 b = b(:,(c==1));
 
 params_optimise = [];
@@ -61,3 +61,4 @@ end
 % Vary weights up to 20%; check corresponding S on graph; relative difference from maximum
 % Repeat the same for non-optimal weights (in this case, look for minimum
 % Do it for all
+% Results on Quad 2.4, 4/7/2022
