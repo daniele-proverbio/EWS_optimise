@@ -33,6 +33,7 @@ A brief description is here provided. For other details, refer to the correspond
   * optimal_plot: after extacting the weight sets associated to each \alpha (see simulate_after_transition_both), it produces the final plot
   * testsignificance: checks the first parameter value at whichthe increasing trend of statistical indicastors become significant
   * scaleStd: simple adjustments for plotting
+  * with_cv: same optimisation procedure, including CV to make sure it does not get selected within the composite indicator
 
 ### Analytical plots and other figures (Mathematica and Matlab)
 In "code_figures": 
