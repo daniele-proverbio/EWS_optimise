@@ -91,12 +91,16 @@ std_entropy_s = std(entropy_matrix1');
 %% Plot benchmark
 % Only for one example
 
+
+
 if plotcheck == 1
 
     fig_cut = 1; % Just to pack the figure a bit
     fig_end = length(val2);
     sample = 41;  % One sample trajectory
     num_fig = 8; 
+    ax_font = 18;
+    label_font = 22;
     
     figure('position',[10 10 900 900])
     subplot(ceil(num_fig/2),2,1)
@@ -109,9 +113,9 @@ if plotcheck == 1
     xline(0,'--','linewidth',1)
     alpha(p,.05)
     ax = gca;
-    ax.FontSize = 14; 
-    xlabel("c - c_0",'fontsize',18)
-    ylabel("Var.",'fontsize',18)
+    ax.FontSize = ax_font; 
+    xlabel("c - c_0",'fontsize',label_font)
+    ylabel("Var.",'fontsize',label_font)
     
     subplot(ceil(num_fig/2),2,2)
     hold on
@@ -123,9 +127,9 @@ if plotcheck == 1
     xline(0,'--','linewidth',1)
     alpha(q,.05)
     ax = gca;
-    ax.FontSize = 14; 
-    xlabel("c - c_0",'fontsize',18)
-    ylabel("AC(1)",'fontsize',18)
+    ax.FontSize = ax_font; 
+    xlabel("c - c_0",'fontsize',label_font)
+    ylabel("AC(1)",'fontsize',label_font)
     
     subplot(ceil(num_fig/2),2,3)
     high_s = mean_skew+std_skew';
@@ -137,9 +141,9 @@ if plotcheck == 1
     xline(0,'--','linewidth',1)
     alpha(r,.05)
     ax = gca;
-    ax.FontSize = 14;
-    xlabel("c - c_0",'fontsize',18)
-    ylabel("Skew.",'fontsize',18)
+    ax.FontSize = ax_font;
+    xlabel("c - c_0",'fontsize',label_font)
+    ylabel("Skew.",'fontsize',label_font)
     
     subplot(ceil(num_fig/2),2,4)
     high_s = mean_kurt+std_kurt';
@@ -151,9 +155,9 @@ if plotcheck == 1
     xline(0,'--','linewidth',1)
     alpha(r,.05)
     ax = gca;
-    ax.FontSize = 14;
-    xlabel("c - c_0",'fontsize',18)
-    ylabel("Kurt.",'fontsize',18)
+    ax.FontSize = ax_font;
+    xlabel("c - c_0",'fontsize',label_font)
+    ylabel("Kurt.",'fontsize',label_font)
     
     subplot(ceil(num_fig/2),2,5)
     high_c = mean_CV+std_CV';
@@ -165,9 +169,9 @@ if plotcheck == 1
     xline(0,'--','linewidth',1)
     alpha(r,.05)
     ax = gca;
-    ax.FontSize = 14;
-    xlabel("c - c_0",'fontsize',18)
-    ylabel("CV",'fontsize',18)
+    ax.FontSize = ax_font;
+    xlabel("c - c_0",'fontsize',label_font)
+    ylabel("CV",'fontsize',label_font)
     
     subplot(ceil(num_fig/2),2,6)
     high_i = mean_ID+std_ID';
@@ -179,25 +183,25 @@ if plotcheck == 1
     xline(0,'--','linewidth',1)
     alpha(r,.05)
     ax = gca;
-    ax.FontSize = 14;
-    xlabel("c - c_0",'fontsize',18)
-    ylabel("ID",'fontsize',18)
+    ax.FontSize = ax_font;
+    xlabel("c - c_0",'fontsize',label_font)
+    ylabel("ID",'fontsize',label_font)
+    
+%     subplot(ceil(num_fig/2),2,8)
+%     high_i = mean_entropy_w+std_entropy_w';
+%     low_i = mean_entropy_w-std_entropy_w';
+%     hold on
+%     r = patch([val2(fig_cut:fig_end) fliplr(val2(fig_cut:fig_end))], [high_i(fig_cut:fig_end)' fliplr(low_i(fig_cut:fig_end)')], 'b','LineStyle','none');
+%     %plot(val2(fig_cut:fig_end),ID_matrix(fig_cut:fig_end, sample),'b')
+%     plot(val2(fig_cut:fig_end),mean_entropy_w(fig_cut:fig_end),'k','LineWidth',1)
+%     xline(0,'--','linewidth',1)
+%     alpha(r,.05)
+%     ax = gca;
+%     ax.FontSize = ax_font;
+%     xlabel("c - c_0",'fontsize',18)
+%     ylabel("E_w",'fontsize',18)
     
     subplot(ceil(num_fig/2),2,7)
-    high_i = mean_entropy_w+std_entropy_w';
-    low_i = mean_entropy_w-std_entropy_w';
-    hold on
-    r = patch([val2(fig_cut:fig_end) fliplr(val2(fig_cut:fig_end))], [high_i(fig_cut:fig_end)' fliplr(low_i(fig_cut:fig_end)')], 'b','LineStyle','none');
-    %plot(val2(fig_cut:fig_end),ID_matrix(fig_cut:fig_end, sample),'b')
-    plot(val2(fig_cut:fig_end),mean_entropy_w(fig_cut:fig_end),'k','LineWidth',1)
-    xline(0,'--','linewidth',1)
-    alpha(r,.05)
-    ax = gca;
-    ax.FontSize = 14;
-    xlabel("c - c_0",'fontsize',18)
-    ylabel("E_w",'fontsize',18)
-    
-    subplot(ceil(num_fig/2),2,8)
     high_i = mean_entropy_s+std_entropy_s';
     low_i = mean_entropy_s-std_entropy_s';
     hold on
@@ -207,9 +211,9 @@ if plotcheck == 1
     xline(0,'--','linewidth',1)
     alpha(r,.05)
     ax = gca;
-    ax.FontSize = 14;
-    xlabel("c - c_0",'fontsize',18)
-    ylabel("H_s",'fontsize',18)
+    ax.FontSize = ax_font;
+    xlabel("c - c_0",'fontsize',label_font)
+    ylabel("H_s",'fontsize',label_font)
 
 end
 

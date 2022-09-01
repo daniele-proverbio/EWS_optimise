@@ -6,7 +6,7 @@ clear all; close all; clc;
 % Load files to analyse
 parentdir =  fileparts(pwd);
 
-white_noise = false;  % Do we want to analyse simulations with  white or multiplicative noise?
+white_noise = true;  % Do we want to analyse simulations with white or multiplicative noise?
 mult_noise = 3;       % 0 = sigma x; 1 = sigma x^2; 2 = sigma x^2/(1+x^2); 3 = both mult and white
 
 if white_noise
@@ -40,21 +40,37 @@ for n=1:size(files,1)
     params_optimise = [params_optimise ; optimise(files(n).name,b,white_noise,mult_noise)];
 end 
 
-%%
+%% Scores
 
 scores = sum(params_optimise,1);
 
-figure()
-plot(scores,linewidth=1.2)
+figure('Position', [10 10 800 300])
+plot(scores,linewidth=1.5)
 ax = gca;
-ax.FontSize = 16; 
-ylabel('scores $\mathrm{S}$',fontsize=26,Interpreter='latex')
-xlabel('Combination $\#$',fontsize=26,Interpreter='latex')
-if white_noise == true
-    title("WN")
-else
-    title("MN")
-end
+ax.FontSize = 20; 
+ylabel('scores $\mathrm{S}$',fontsize=36,Interpreter='latex')
+xlabel('Combination $\#$',fontsize=36,Interpreter='latex')
+% if white_noise == true
+%     title("WN")
+% else
+%     title("MN")
+% end
+
+%% Combinations
+x = 1:64;
+y = 1:3;
+
+figure('Position', [10 10 800 300])
+imagesc(x,y,b)
+%set(gca,'YDir','normal')
+ax = gca;
+ax.FontSize = 23; 
+xlabel('Combination $\#$',fontsize=36,Interpreter='latex')
+%ylabel('$\sigma$',fontsize=36,Interpreter='latex')
+yticks([1 2 3])
+yticklabels({'AC(1)','Var','H_S'})
+ytickangle(90)
+colorbar
 
 
 %% Uncertainty for sub-optimal combinations

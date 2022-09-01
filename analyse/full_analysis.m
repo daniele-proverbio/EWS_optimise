@@ -44,12 +44,12 @@ end
 % For each statistical indicator
 
 figure()
-plot(sigmas,params_ok,'-o',linewidth=1.1)
-legend({'Var','AC1','Skew','Kurt','CV','ID','H_S'},FontSize=14,Location='southeast',NumColumns=3)
+plot(sigmas,params_ok,'-o',linewidth=1.5)
+legend({'Var','AC1','Skew','Kurt','CV','ID','H_S'},FontSize=20,Location='southeast',NumColumns=3)
 ax = gca;
-ax.FontSize = 16; 
-ylabel('$c_{sig}$',fontsize=26,Interpreter='latex')
-xlabel('$\sigma$',fontsize=26,Interpreter='latex')
+ax.FontSize = 20; 
+ylabel('$c_{sig}$',fontsize=36,Interpreter='latex')
+xlabel('$\sigma$',fontsize=36,Interpreter='latex')
 
 %% Plot counters
 
@@ -57,9 +57,9 @@ figure()
 imagesc(val2(1:60),sigmas,counter)
 set(gca,'YDir','normal')
 ax = gca;
-ax.FontSize = 16; 
-xlabel('$c-c_0$',fontsize=26,Interpreter='latex')
-ylabel('$\sigma$',fontsize=26,Interpreter='latex')
+ax.FontSize = 20; 
+xlabel('$c-c_0$',fontsize=36,Interpreter='latex')
+ylabel('$\sigma$',fontsize=36,Interpreter='latex')
 title('Counts [%]')
 colorbar
 
